@@ -1,26 +1,31 @@
 const Card = require('../models/card');
 
 module.exports.createCard = (req, res) => {
-  console.log(`card controller is working ${req.user._id}`);
   const {
-    name, link, likes, createdAt,
+    name, link,
   } = req.body;
-  const owner = req.user._id;
   Card.create({
-    name, link, owner, likes, createdAt,
+    name, link, owner: req.user._id,
   })
-    .then((card) => res.send({ data: card }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка создания карточки' }));
+    .then((card) => {
+      Card.findById(card._id) // находим новую карточку, чтобы ответ был с инфой про ее создателя
+        .populate('owner')
+        .then((item) => res.send({ data: item }))
+        .catch((err) => res.status(500).send({ message: err.message || 'Произошла ошибка' }));
+    })
+    .catch((err) => res.status(500).send({ message: err.message || 'Произошла ошибка' }));
 };
 
 module.exports.getCards = (req, res) => {
   Card.find({})
+    .populate('owner')
     .then((cards) => res.send({ data: cards }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка получения карточек' }));
+    .catch((err) => res.status(500).send({ message: err.message || 'Произошла ошибка' }));
 };
 
 module.exports.getCard = (req, res) => {
   Card.findById(req.params.id)
+    .populate('owner')
     .then((card) => res.send({ data: card }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка получения карточки' }));
+    .catch((err) => res.status(500).send({ message: err.message || 'Произошла ошибка' }));
 };
