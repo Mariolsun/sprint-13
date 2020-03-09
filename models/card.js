@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { checkLink } = require('../validators/picLink');
+const { checkLink } = require('../validators/checkLink');
 
 const cardSchema = new mongoose.Schema({
   name: {

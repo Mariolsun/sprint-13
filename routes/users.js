@@ -1,10 +1,12 @@
 const router = require('express').Router();
-
+const { doesUserExists } = require('../middlewares/doesUserExists');
 const { createUser, getUser, getUsers } = require('../controllers/users');
 
-console.log('user router is working');
 router.get('/', getUsers);
+
+router.get('/:id', doesUserExists);
 router.get('/:id', getUser);
+
 router.post('/', createUser);
 
 

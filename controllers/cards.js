@@ -29,3 +29,12 @@ module.exports.getCard = (req, res) => {
     .then((card) => res.send({ data: card }))
     .catch((err) => res.status(500).send({ message: err.message || 'Произошла ошибка' }));
 };
+
+
+module.exports.deleteCard = (req, res) => {
+  Card.findByIdAndDelete(req.params.id)
+    .then((DeletedCard) => {
+      res.send({ message: `Карточка ${DeletedCard.name} удалена` });
+    })
+    .catch((err) => res.status(500).send({ message: err.message || 'Произошла ошибка' }));
+};
