@@ -11,9 +11,9 @@ module.exports.createCard = (req, res) => {
       Card.findById(card._id) // находим новую карточку, чтобы ответ был с инфой про ее создателя
         .populate('owner')
         .then((item) => res.send({ data: item }))
-        .catch((err) => res.status(500).send({ message: err.message || 'Произошла ошибка' }));
+        .catch((err) => res.status(400).send({ message: err.message || 'Произошла ошибка' }));
     })
-    .catch((err) => res.status(500).send({ message: err.message || 'Произошла ошибка' }));
+    .catch((err) => res.status(400).send({ message: err.message || 'Произошла ошибка' }));
 };
 
 module.exports.getCards = (req, res) => {
